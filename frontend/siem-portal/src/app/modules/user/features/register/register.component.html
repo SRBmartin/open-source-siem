@@ -1,0 +1,81 @@
+<div class="auth-wrapper">
+  <div class="auth-box">
+    <div class="auth-left">
+      <img src="assets/images/Fingerprint-bro.svg" alt="illustration" class="illustration" />
+    </div>
+    <div class="auth-right">
+      <h2 class="title">Create Account</h2>
+      <p class="subtitle">Register your SIEM portal profile</p>
+
+      <form [formGroup]="registerForm">
+        <app-input
+          label="First Name"
+          name="firstName"
+          placeholder="Enter your first name"
+          [required]="true"
+          formControlName="firstName"
+          [hasError]="(registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) ?? false"
+        />
+        <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="text-danger">
+          <small>First name is required.</small>
+        </div>
+
+        <app-input
+          label="Last Name"
+          name="lastName"
+          placeholder="Enter your last name"
+          [required]="true"
+          formControlName="lastName"
+          [hasError]="(registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) ?? false"
+        />
+        <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="text-danger">
+          <small>Last name is required.</small>
+        </div>
+
+        <app-input
+          label="Email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          [required]="true"
+          formControlName="email"
+          [hasError]="(registerForm.get('email')?.invalid && registerForm.get('email')?.touched) ?? false"
+        />
+        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger">
+          <small *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</small>
+          <small *ngIf="registerForm.get('email')?.errors?.['email']">Please enter a valid email.</small>
+        </div>
+
+        <app-input
+          label="Password"
+          type="password"
+          name="password"
+          placeholder="Enter your password"
+          [required]="true"
+          formControlName="password"
+          [hasError]="(registerForm.get('password')?.invalid && registerForm.get('password')?.touched) ?? false"
+        />
+        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-danger">
+          <small *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</small>
+          <small *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters.</small>
+        </div>
+
+        <div class="text-center">
+          <app-button
+            label="Register"
+            type="button"
+            class="btn-primary"
+            size="md"
+            [disabled]="!registerForm.valid"
+            (clickEvent)="onRegister()"
+          ></app-button>
+        </div>
+      </form>
+
+      <p class="switch-text">
+        Already have an account?
+        <a (click)="goToLogin()" style="cursor: pointer;">Login</a>
+      </p>
+    </div>
+  </div>
+</div>

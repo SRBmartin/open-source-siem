@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --primary-color: #7C83FD;
+    --secondary-color: #96BAFF;
+    --tercial-color: #7DEDFF;
+    --accent-color: #88FFF7;
+    --dark-color: #0f0942;
+    --black-color: #000;
+    --white-color: #fff;
+    --error-color: #DC3545;
+    //--bg-color: #EFFFFD;
+
+    --font-quicksand: 'Quicksand', sans-serif;
+    --font-montserrat: 'Montserrat', sans-serif;
+}
+
+body {
+    font-family: var(--font-montserrat) !important;
+    background-color: var(--dark-color) !important;
+
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: none;
+}

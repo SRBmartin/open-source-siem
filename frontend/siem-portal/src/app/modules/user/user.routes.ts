@@ -1,15 +1,16 @@
 import { Routes } from '@angular/router';
+import { RouteNames } from '../../shared/consts/routes';
 
 export const userRoutes: Routes = [
   {
-    path: 'login',
+    path: RouteNames.LoginRoute,
     loadComponent: () =>
-      import('./login/login.component').then(m => m.LoginComponent)
+      import('./features/login/login.component').then(m => m.LoginComponent)
   },
   {
-    path: 'register',
+    path: RouteNames.RegisterRoute,
     loadComponent: () =>
-      import('./register/register.component').then(m => m.RegisterComponent)
+      import('./features/register/register.component').then(m => m.RegisterComponent)
   },
   
   { path: '', redirectTo: 'login', pathMatch: 'full' } // from /user to /user/login (maybe it's good to have so we will put it here)
