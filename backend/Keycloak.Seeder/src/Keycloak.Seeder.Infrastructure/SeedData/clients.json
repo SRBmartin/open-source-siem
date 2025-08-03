@@ -1,0 +1,9 @@
+[
+  {
+    "clientId": "mail-service",
+    "name": "Mail service client",
+    "publicClient": false,
+    "directAccessGrantsEnabled": true,
+    "redirectUris": []
+  }
+]
