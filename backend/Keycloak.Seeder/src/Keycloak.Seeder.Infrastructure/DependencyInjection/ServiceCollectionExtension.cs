@@ -27,6 +27,15 @@ public static class ServiceCollectionExtension
             .HandleTransientHttpError()
             .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(3)));
 
+        services.AddHttpClient<IKeycloakRolesSeeder, KeycloakRolesSeeder>(client =>
+        {
+            client.BaseAddress = new Uri(config["Keycloak:BaseUrl"]);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        })
+        .AddPolicyHandler(HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(3)));
+
         return services;
     }
 }
