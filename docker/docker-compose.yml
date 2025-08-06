@@ -69,15 +69,45 @@ services:
       - pgadmin_data:/var/lib/pgadmin
 
   keycloak-seeder:
-      build:
-        context: ../backend/Keycloak.Seeder
-        dockerfile: Dockerfile
-      container_name: keycloak-seeder
-      depends_on:
-        keycloak:
-          condition: service_healthy
-      networks:
-        - keycloak-net
+    build:
+      context: ../backend/Keycloak.Seeder
+      dockerfile: Dockerfile
+    container_name: keycloak-seeder
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    networks:
+      - keycloak-net
+
+  mail-service:
+    build:
+      context: ../backend/Mail.Service
+      dockerfile: Dockerfile
+    container_name: mail-service
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    ports:
+      - "8090:8090"
+    environment:
+      ASPNETCORE_URLS: "http://+:8090"
+    networks:
+      - keycloak-net
+
+  iam-platform:
+    build:
+      context: ../backend/Iam.Platform
+      dockerfile: Dockerfile
+    container_name: iam-platform
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    ports:
+      - "8095:8095"
+    environment:
+      ASPNETCORE_URLS: "http://+:8095"
+    networks:
+      - keycloak-net
 
 networks:
   keycloak-net:
