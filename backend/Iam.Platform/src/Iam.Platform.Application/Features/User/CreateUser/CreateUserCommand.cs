@@ -4,4 +4,4 @@ using Iam.Platform.Application.Models;
 
 namespace Iam.Platform.Application.Features.User.CreateUser;
 
-public record CreateUserCommand (CreateUserDto User) : IRequest<ApiResponse<string>>;
+public record CreateUserCommand (CreateUserDto User) : IRequest<ApiResponse<CreateUserResponseDto>>;

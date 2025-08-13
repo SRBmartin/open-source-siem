@@ -16,6 +16,7 @@ public class IntrospecTokenCommandHandler (
             return false;
 
         var token = authToken.Substring("Bearer ".Length).Trim();
+        Console.WriteLine($"Token before: {token}");
         if (string.IsNullOrEmpty(token))
             return false;
 

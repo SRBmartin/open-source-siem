@@ -31,8 +31,13 @@ public class KeycloakTokenValidationService (
             new("token_type_hint","access_token")
         });
 
+        Console.WriteLine($"{_settings.BaseUrl}/{_settings.Realm}");
+        Console.WriteLine($"{token}");
+
         var resp = await httpClient.SendAsync(req, cancellationToken);
         if (!resp.IsSuccessStatusCode) return false;
+
+        Console.WriteLine($"Content: {await resp.Content.ReadAsStringAsync(cancellationToken)}");
 
         using var doc = JsonDocument.Parse(await resp.Content.ReadAsStringAsync(cancellationToken));
         
