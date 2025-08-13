@@ -21,6 +21,26 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  platform-pg:
+    image: postgres:15
+    container_name: platform-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: platform
+      POSTGRES_USER: platform
+      POSTGRES_PASSWORD: platform_pwd
+    ports:
+      - "5434:5432"
+    networks:
+      - keycloak-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U platform -d platform"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - platform_postgres_data:/var/lib/postgresql/data
+
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.1
     container_name: keycloak-siem
@@ -109,12 +129,31 @@ services:
     networks:
       - keycloak-net
 
+  siem-platform:
+    build:
+      context: ../backend/Siem.Platform
+      dockerfile: Dockerfile
+    container_name: siem-platform
+    depends_on:
+      iam-platform:
+        condition: service_healthy
+      mail-service:
+        condition: service_healthy
+    ports:
+      - "8100:8100"
+    environment:
+      ASPNETCORE_URLS: "http://+:8100"
+    networks:
+      - keycloak-net
+
 networks:
   keycloak-net:
     driver: bridge
 
 volumes:
   postgres_data:
+    driver: local
+  platform_postgres_data:
     driver: local
   keycloak_data:
     driver: local
