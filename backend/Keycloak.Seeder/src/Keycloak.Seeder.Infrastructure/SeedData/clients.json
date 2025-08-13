@@ -5,5 +5,19 @@
     "publicClient": false,
     "directAccessGrantsEnabled": true,
     "redirectUris": []
+  },
+  {
+    "clientId": "auth-service",
+    "name": "Auth service platform client",
+    "publicClient": false,
+    "directAccessGrantsEnabled": true,
+    "redirectUris": []
+  },
+  {
+    "clientId": "siem-platform",
+    "name": "Siem main platform client",
+    "publicClient": false,
+    "directAccessGrantsEnabled": true,
+    "redirectUris": []
   }
 ]
