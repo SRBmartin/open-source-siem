@@ -1,5 +1,4 @@
 ﻿using MailService.Application.Interfaces;
-using MailService.Application.Interfaces;
 using MailService.Infrastructure.Configuration;
 using MailService.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;

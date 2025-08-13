@@ -17,7 +17,7 @@ public class EmailController (
 
         try
         {
-            await verificationService.SendVerificationEmailAsync(request.UserId, request.Email, request.Token, cancellationToken);
+            await verificationService.SendVerificationEmailAsync(request.UserId, request.Email, request.Token, request.Password, cancellationToken);
 
             return Accepted();
         }

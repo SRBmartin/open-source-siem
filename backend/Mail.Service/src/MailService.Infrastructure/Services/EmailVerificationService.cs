@@ -11,13 +11,14 @@ public class EmailVerificationService (
 {
     private readonly UrisSettings _settings = options.Value;
 
-    public Task SendVerificationEmailAsync(string userId, string email, string token, CancellationToken cancellationToken = default)
+    public Task SendVerificationEmailAsync(string userId, string email, string token, string password, CancellationToken cancellationToken = default)
     {
         var activationLink = $"{_settings.FrontendUri.TrimEnd('/')}/{userId}/{token}";
 
         var model = new
         {
-            ActivationLink = activationLink
+            ActivationLink = activationLink,
+            Password = password
         };
 
         return emailService.SendEmailAsync(
