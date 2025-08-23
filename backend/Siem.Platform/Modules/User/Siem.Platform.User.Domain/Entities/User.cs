@@ -6,6 +6,8 @@ public class User : Entity
     public string Email { get; private set; } = default!;
     public string FirstName { get; private set; } = default!;
     public string LastName { get; private set; } = default!;
+    public DateTimeOffset? ActivatedAt { get; private set; }
+    public bool IsActivated => ActivatedAt.HasValue;
     public bool IsDeleted { get; private set; } = default!;
 
     private readonly List<ActivationToken> _activationTokens = new();
@@ -36,7 +38,34 @@ public class User : Entity
         );
 
         return user;
+    }
 
+    public ActivationToken IssueActivationToken(string token, DateTimeOffset? now = null, TimeSpan? ttl = null)
+    {
+        var issued = ActivationToken.Issue(Id, token, now, ttl);
+        _activationTokens.Add(issued);
+
+        return issued;
+    }
+
+    public bool TryActivateWithToken(string tokenValue, DateTimeOffset? now = null)
+    {
+        if (IsActivated) return true;
+
+        var t = _activationTokens
+            .FirstOrDefault(t => !t.IsUsed && !t.IsExpired(now) && t.Token.Equals(tokenValue));
+
+        if (t is null) return false;
+
+        t.MarkUsed();
+        ActivatedAt = now ?? DateTimeOffset.UtcNow;
+
+        return true;
+    }
+
+    public void Delete()
+    {
+        if (!IsDeleted) IsDeleted = true;
     }
 
 }

@@ -1,7 +1,6 @@
 ﻿using Siem.Platform.Shared.Application.Abstractions.Common.Http;
 using Siem.Platform.User.Application.Contracts;
 using Siem.Platform.User.Application.DTOs.Identity.User.Create;
-using Siem.Platform.User.Application.DTOs.User;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -42,4 +41,33 @@ public class IdentityService(
 
         return Result<CreateUserResponseDto>.Success(new CreateUserResponseDto(api.Data.ExternalId));
     }
+
+    public async Task<Result<bool>> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var response = await httpClient.GetAsync($"api/users/exists?email={Uri.EscapeDataString(email)}", cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            return Result<bool>.Failure(new Error("iam.failed", $"Checking existence of user with email {email} failed with status code {(int)response.StatusCode}."));
+        }
+
+        var api = await response.Content.ReadFromJsonAsync<IamApiResponse<bool>>(Json, cancellationToken);
+        if (api is null || !api.Success)
+        {
+            return Result<bool>.Failure(new Error("iam.deserialize", "Empty or unsuccessful IAM response while checking user existence."));
+        }
+
+        return Result<bool>.Success(api.Data);
+    }
+
+    public async Task<Result> DeleteUserAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var response = await httpClient.DeleteAsync($"api/users/{userId}", cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            return Result.Failure(new Error("iam.failed", $"Deleting of user with ID {userId} failed with status code {(int)response.StatusCode}."));
+        }
+
+        return Result.Success();
+    }
+
 }

@@ -4,6 +4,7 @@ public interface IUserRepository
 {
     Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
     Task AddAsync(Entities.User user, CancellationToken cancellationToken = default);
+    void Delete(Entities.User user, bool soft = true);
 
     #region UnitOfWork
 

@@ -26,6 +26,9 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<Domain.Entities.
                .IsRequired()
                .HasMaxLength(100);
 
+        builder.Property(u => u.ActivatedAt)
+            .IsRequired(false);
+
         builder.Property(u => u.CreatedAt)
                .IsRequired();
 

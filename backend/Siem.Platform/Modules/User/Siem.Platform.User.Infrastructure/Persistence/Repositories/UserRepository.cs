@@ -19,6 +19,20 @@ public class UserRepository (
             .AnyAsync(t => t.Email.Equals(email), cancellationToken);
     }
 
+    public void Delete(Domain.Entities.User user, bool soft = true)
+    {
+        if (soft)
+        {
+            user.Delete();
+            dbContext.Update(user);
+        }
+        else
+        {
+            dbContext.Remove(user);
+        }
+
+        }
+
     #region UnitOfWork
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -50,4 +50,21 @@ public class RandomGenerator : IRandomGenerator
         return new string(chars);
     }
 
+    public string GenerateUriSafeToken(int byteLength = 32)
+    {
+        var bytes = RandomNumberGenerator.GetBytes(byteLength);
+        var base64 = Convert.ToBase64String(bytes);
+
+        return base64.Replace('+', '-')
+                     .Replace('/', '_')
+                     .TrimEnd('=');
+    }
+
+    public string HashTokenSha256(string token)
+    {
+        using var sha = SHA256.Create();
+        var hashBytes = sha.ComputeHash(Encoding.UTF8.GetBytes(token));
+
+        return Convert.ToHexString(hashBytes).ToLowerInvariant();
+    }
 }

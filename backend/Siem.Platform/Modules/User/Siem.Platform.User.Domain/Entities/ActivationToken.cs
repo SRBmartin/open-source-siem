@@ -33,5 +33,10 @@ public class ActivationToken : Entity
     }
 
     public bool IsExpired(DateTimeOffset? at = null) => (at ?? DateTimeOffset.UtcNow) >= ExpiresAt;
+    
+    public void MarkUsed()
+    {
+        if (!IsUsed) IsUsed = true;
+    }
 
 }
