@@ -2,6 +2,8 @@
 using Iam.Platform.Api.Utilities;
 using Iam.Platform.Application.DTOs.User;
 using Iam.Platform.Application.Features.User.CreateUser;
+using Iam.Platform.Application.Features.User.DeleteUser;
+using Iam.Platform.Application.Features.User.ExistsUser;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Iam.Platform.Api.Controllers;
@@ -19,4 +21,25 @@ public class UsersController (
 
         return response.ToActionResult(this, nameof(Create));
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] string id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteUserCommand(id);
+
+        var response = await mediator.Send(command, cancellationToken);
+
+        return response.ToActionResult(this, nameof(Delete));
+    }
+
+    [HttpGet("exists")]
+    public async Task<IActionResult> Exists([FromQuery] string email, CancellationToken cancellationToken)
+    {
+        var command = new ExistsUserCommand(email);
+
+        var response = await mediator.Send(command, cancellationToken);
+
+        return response.ToActionResult(this, nameof(Exists));
+    }
+
 }
