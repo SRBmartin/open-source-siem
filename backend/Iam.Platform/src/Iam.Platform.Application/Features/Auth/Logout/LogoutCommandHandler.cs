@@ -20,7 +20,7 @@ public sealed class LogoutCommandHandler (
             var ok = await keycloakUserService.LogoutUserSessionsAsync(command.UserId, cancellationToken);
             return ok ? ApiResponse<bool>.Ok(true) : ApiResponse<bool>.Fail("Failed to terminate user sessions.");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return ApiResponse<bool>.Fail("Logout failed due to an unexpected error.");
         }

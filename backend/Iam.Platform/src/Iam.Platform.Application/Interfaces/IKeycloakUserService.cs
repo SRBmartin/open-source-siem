@@ -18,4 +18,9 @@ public interface IKeycloakUserService
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns></returns>
     Task<bool> LogoutUserSessionsAsync(string userId, CancellationToken cancellationToken = default);
+    Task<bool> SetUserPasswordAsync(string userId, string password, CancellationToken cancellationToken = default);
+    Task<KeycloakRole?> GetRealmRoleByNameAsync(string roleName, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<KeycloakRole>> GetUserRealmRolesAsync(string userId, CancellationToken cancellationToken = default);
+    Task<bool> AddRealmRolesToUserAsync(string userId, IEnumerable<KeycloakRole> roles, CancellationToken cancellationToken = default);
+    Task<bool> RemoveRealmRolesFromUserAsync(string userId, IEnumerable<KeycloakRole> roles, CancellationToken cancellationToken = default);
 }

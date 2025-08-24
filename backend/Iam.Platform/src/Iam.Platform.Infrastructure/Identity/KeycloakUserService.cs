@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Net;
 using Iam.Platform.Domain.User;
 using System.Net.Http.Json;
+using Iam.Platform.Infrastructure.Identity.Models;
 
 namespace Iam.Platform.Infrastructure.Identity;
 
@@ -98,6 +99,65 @@ public class KeycloakUserService (
             content: null,
             cancellationToken);
 
+        return resp.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> SetUserPasswordAsync(string userId, string password, CancellationToken cancellationToken = default)
+    {
+        var payload = new KeycloakCredential { Value = password };
+
+        var response = await httpClient.PutAsJsonAsync($"/admin/realms/{_options.Realm}/users/{userId}/reset-password", payload, cancellationToken);
+
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<KeycloakRole?> GetRealmRoleByNameAsync(string roleName, CancellationToken cancellationToken = default)
+    {
+        var resp = await httpClient.GetAsync(
+            $"/admin/realms/{_options.Realm}/roles/{Uri.EscapeDataString(roleName)}",
+            cancellationToken);
+
+        if (!resp.IsSuccessStatusCode)
+            return null;
+
+        var json = await resp.Content.ReadAsStringAsync(cancellationToken);
+        return JsonSerializer.Deserialize<KeycloakRole>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+    }
+
+    public async Task<IReadOnlyList<KeycloakRole>> GetUserRealmRolesAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var resp = await httpClient.GetAsync(
+            $"/admin/realms/{_options.Realm}/users/{userId}/role-mappings/realm",
+            cancellationToken);
+
+        if (!resp.IsSuccessStatusCode)
+            return Array.Empty<KeycloakRole>();
+
+        var json = await resp.Content.ReadAsStringAsync(cancellationToken);
+        var roles = JsonSerializer.Deserialize<List<KeycloakRole>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        return roles ?? new List<KeycloakRole>();
+    }
+
+    public async Task<bool> AddRealmRolesToUserAsync(string userId, IEnumerable<KeycloakRole> roles, CancellationToken cancellationToken = default)
+    {
+        var resp = await httpClient.PostAsJsonAsync(
+            $"/admin/realms/{_options.Realm}/users/{userId}/role-mappings/realm",
+            roles,
+            cancellationToken);
+
+        return resp.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> RemoveRealmRolesFromUserAsync(string userId, IEnumerable<KeycloakRole> roles, CancellationToken cancellationToken = default)
+    {
+        using var req = new HttpRequestMessage(
+            HttpMethod.Delete,
+            $"/admin/realms/{_options.Realm}/users/{userId}/role-mappings/realm")
+        {
+            Content = JsonContent.Create(roles)
+        };
+
+        var resp = await httpClient.SendAsync(req, cancellationToken);
         return resp.IsSuccessStatusCode;
     }
 
