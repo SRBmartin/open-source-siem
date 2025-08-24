@@ -24,6 +24,18 @@ public class UserRepository (
         return user;
     }
 
+    public async Task<Domain.Entities.User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var user = await dbContext.Users
+            .FirstOrDefaultAsync(
+                t => t.Email.Equals(email) &&
+                !t.IsDeleted,
+            cancellationToken
+            );
+
+        return user;
+    }
+
     public Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return dbContext.Users
@@ -42,7 +54,7 @@ public class UserRepository (
             dbContext.Remove(user);
         }
 
-        }
+    }
 
     #region UnitOfWork
 

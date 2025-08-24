@@ -1,6 +1,7 @@
 ﻿using Siem.Platform.Shared.Application.Abstractions.Common.Http;
 using Siem.Platform.User.Application.Contracts;
 using Siem.Platform.User.Application.DTOs.Identity.User.Create;
+using Siem.Platform.User.Application.DTOs.Identity.User.Login;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -88,4 +89,48 @@ public class IdentityService(
         return Result.Success();
     }
 
+    public async Task<Result<string>> LoginAsync(string username, string password, CancellationToken cancellationToken = default)
+    {
+        var payload = new LoginRequestDto
+        {
+            Username = username,
+            Password = password
+        };
+
+        var response = await httpClient.PostAsJsonAsync("api/auth/login", payload, Json, cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var body = await response.Content.ReadAsStringAsync(cancellationToken);
+            return Result<string>.Failure(new Error("iam.http_error", $"IAM login returned {(int)response.StatusCode}. {body}"));
+        }
+
+        var apiResponse = await response.Content.ReadFromJsonAsync<IamApiResponse<LoginResponseDto>>(Json, cancellationToken);
+        if (apiResponse is null || !apiResponse.Success || apiResponse.Data is null || string.IsNullOrWhiteSpace(apiResponse.Data.AccessToken))
+        {
+            return Result<string>.Failure(new Error("iam.failed", apiResponse?.Message ?? "Login failed."));
+        }
+
+        return Result<string>.Success(apiResponse.Data.AccessToken);
+    }
+
+    public async Task<Result> LogoutAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var payload = new LogoutRequestDto { UserId = userId };
+
+        var response = await httpClient.PostAsJsonAsync("api/auth/logout", payload, Json, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            var body = await response.Content.ReadAsStringAsync(cancellationToken);
+            return Result.Failure(new Error("iam.http_error", $"Logout error returned {(int)response.StatusCode}. {body}"));
+        }
+
+        var apiResponse = await response.Content.ReadFromJsonAsync<IamApiResponse<bool>>(Json, cancellationToken);
+        if (apiResponse is null || !apiResponse.Success || apiResponse.Data is false)
+        {
+            return Result.Failure(new Error("iam.failed", apiResponse?.Message ?? "Logout failed."));
+        }
+
+        return Result.Success();
+    }
 }

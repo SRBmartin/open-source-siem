@@ -9,4 +9,6 @@ public interface IIdentityService
     Task<Result> VerifyEmailAsync(string userId, CancellationToken cancellationToken = default);
     Task<Result<bool>> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
     Task<Result> DeleteUserAsync(string userId, CancellationToken cancellationToken = default);
+    Task<Result<string>> LoginAsync(string username, string password, CancellationToken cancellationToken = default);
+    Task<Result> LogoutAsync(string userId, CancellationToken cancellationToken = default);
 }
