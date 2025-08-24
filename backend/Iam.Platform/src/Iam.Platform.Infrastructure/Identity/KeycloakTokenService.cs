@@ -61,4 +61,5 @@ public class KeycloakTokenService (
         return doc.RootElement.GetProperty("access_token").GetString()
             ?? throw new InvalidDataException("No access_token provided.");
     }
+
 }

@@ -12,7 +12,6 @@ namespace Iam.Platform.Infrastructure.Identity;
 
 public class KeycloakUserService (
     HttpClient httpClient,
-    IKeycloakTokenService keycloakTokenService,
     IOptions<KeycloakSettings> keycloakOptions
 ) : IKeycloakUserService
 {
@@ -90,6 +89,16 @@ public class KeycloakUserService (
         );
 
         return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> LogoutUserSessionsAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var resp = await httpClient.PostAsync(
+            $"/admin/realms/{_options.Realm}/users/{userId}/logout",
+            content: null,
+            cancellationToken);
+
+        return resp.IsSuccessStatusCode;
     }
 
 }

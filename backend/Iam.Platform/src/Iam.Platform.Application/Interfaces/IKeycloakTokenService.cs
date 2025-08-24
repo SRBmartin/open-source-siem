@@ -17,4 +17,5 @@ public interface IKeycloakTokenService
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns></returns>
     Task<string> GetPasswordTokenAsync(string username, string password, CancellationToken cancellationToken = default);
+
 }
