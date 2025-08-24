@@ -40,6 +40,18 @@ public class KeycloakUserService (
         return string.IsNullOrWhiteSpace(id) ? null! : id;
     }
 
+    public async Task<bool> VerifyEmailAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var user = await GetUserByUserIdAsync(userId, cancellationToken);
+        if (user is null) return false;
+
+        user.EmailVerified = true;
+
+        var response = await httpClient.PutAsJsonAsync($"/admin/realms/{_options.Realm}/users/{userId}", user, cancellationToken);
+
+        return response.IsSuccessStatusCode;
+    }
+
     public async Task<KeycloakUser?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         var response = await httpClient.GetAsync(
@@ -56,6 +68,18 @@ public class KeycloakUserService (
         });
 
         return users?.FirstOrDefault() ?? null!;
+    }
+
+    public async Task<KeycloakUser?> GetUserByUserIdAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var response = await httpClient.GetAsync($"/admin/realms/{_options.Realm}/users/{userId}", cancellationToken);
+
+        if (!response.IsSuccessStatusCode) return null!;
+
+        var json = await response.Content.ReadAsStringAsync(cancellationToken);
+        var user = JsonSerializer.Deserialize<KeycloakUser>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        return user ?? null!;
     }
 
     public async Task<bool> DeleteUserAsync(string keycloakUserId, CancellationToken cancellationToken = default)
