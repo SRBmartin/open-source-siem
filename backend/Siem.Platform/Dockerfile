@@ -35,7 +35,8 @@ RUN dotnet restore Siem.Platform/Siem.Platform.Api/Siem.Platform.Api.csproj \
     --configfile /root/.nuget/NuGet/NuGet.Config
 
 RUN dotnet publish Siem.Platform/Siem.Platform.Api/Siem.Platform.Api.csproj \
-    -c Release -o /app/publish --no-restore
+    -c Release -o /app/publish --no-restore \
+    /p:PublishTrimmed=false /p:PublishAot=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION} AS final
 WORKDIR /app

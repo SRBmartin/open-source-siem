@@ -7,8 +7,10 @@ public interface IIdentityService
 {
     Task<Result<CreateUserResponseDto>> CreateUserAsync(CreateUserRequestDto request, CancellationToken cancellationToken = default);
     Task<Result> VerifyEmailAsync(string userId, CancellationToken cancellationToken = default);
+    Task<Result> ChangePasswordAsync(string userId, string currentPassword, string newPassword, CancellationToken cancellationToken = default);
     Task<Result<bool>> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
     Task<Result> DeleteUserAsync(string userId, CancellationToken cancellationToken = default);
     Task<Result<string>> LoginAsync(string username, string password, CancellationToken cancellationToken = default);
+    Task<Result> ModifyUserRoleAsync(string userId, string roleName, string action, CancellationToken cancellationToken = default);
     Task<Result> LogoutAsync(string userId, CancellationToken cancellationToken = default);
 }

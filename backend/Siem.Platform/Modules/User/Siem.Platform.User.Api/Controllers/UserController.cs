@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Siem.Platform.User.Api.Http;
 using Siem.Platform.User.Api.Security;
 using Siem.Platform.User.Application.DTOs.User;
+using Siem.Platform.User.Application.Features.User.ChangePassword;
 using Siem.Platform.User.Application.Features.User.CreateUser;
+using Siem.Platform.User.Application.Features.User.ModifyRole;
 
 namespace Siem.Platform.User.Api.Controllers;
 
@@ -22,4 +24,42 @@ public class UserController (
 
         return this.ToActionResult(result);
     }
+
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDto request, CancellationToken cancellationToken)
+    {
+        var userId = User.GetUserId();
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return Unauthorized();
+        }
+
+        var command = new ChangePasswordCommand(userId, request.CurrentPassword, request.NewPassword);
+
+        var response = await mediator.Send(command, cancellationToken);
+
+        return this.ToActionResult(response);
+    }
+
+    [HttpPost("roles")]
+    public async Task<IActionResult> ModifyRole([FromBody] ModifyUserRoleRequestDto request, CancellationToken cancellationToken)
+    {
+        var initiatorUserId = User.GetUserId();
+        if (string.IsNullOrWhiteSpace(initiatorUserId))
+        {
+            return Unauthorized();
+        }
+
+        var command = new ModifyRoleCommand(
+            initiatorUserId,
+            request.TargetUserId,
+            request.Role,
+            request.Action
+        );
+
+        var response = await mediator.Send(command, cancellationToken);
+
+        return this.ToActionResult(response);
+    }
+
 }

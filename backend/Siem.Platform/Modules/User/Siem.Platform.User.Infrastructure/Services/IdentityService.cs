@@ -2,6 +2,8 @@
 using Siem.Platform.User.Application.Contracts;
 using Siem.Platform.User.Application.DTOs.Identity.User.Create;
 using Siem.Platform.User.Application.DTOs.Identity.User.Login;
+using Siem.Platform.User.Application.DTOs.Identity.User.Password;
+using Siem.Platform.User.Application.DTOs.Identity.User.Roles;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -61,6 +63,30 @@ public class IdentityService(
         return Result.Success();
     }
 
+    public async Task<Result> ChangePasswordAsync(string userId, string currentPassword, string newPassword, CancellationToken cancellationToken = default)
+    {
+        var payload = new ChangePasswordRequestDto
+        {
+            CurrentPassword = currentPassword,
+            NewPassword = newPassword
+        };
+
+        var response = await httpClient.PutAsJsonAsync($"api/users/{userId}/password", payload, Json, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            var body = await response.Content.ReadAsStringAsync(cancellationToken);
+            return Result.Failure(new Error("iam.http_error", $"IAM password change returned {(int)response.StatusCode}. {body}"));
+        }
+
+        var apiResponse = await response.Content.ReadFromJsonAsync<IamApiResponse<bool>>(Json, cancellationToken);
+        if (apiResponse is null || !apiResponse.Success || apiResponse.Data is false)
+        {
+            return Result.Failure(new Error("iam.failed", apiResponse?.Message ?? "Password change failed."));
+        }
+
+        return Result.Success();
+    }
+
     public async Task<Result<bool>> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         var response = await httpClient.GetAsync($"api/users/exists?email={Uri.EscapeDataString(email)}", cancellationToken);
@@ -114,6 +140,24 @@ public class IdentityService(
         return Result<string>.Success(apiResponse.Data.AccessToken);
     }
 
+    public async Task<Result> ModifyUserRoleAsync(string userId, string role, string action, CancellationToken cancellationToken = default)
+    {
+        var payload = new ModifyUserRoleBody(role, action);
+
+        var resp = await httpClient.PostAsJsonAsync($"api/users/{userId}/roles", payload, Json, cancellationToken);
+        if (!resp.IsSuccessStatusCode)
+        {
+            var body = await resp.Content.ReadAsStringAsync(cancellationToken);
+            return Result.Failure(new Error("iam.http_error", $"IAM modify role returned {(int)resp.StatusCode}. {body}"));
+        }
+
+        var api = await resp.Content.ReadFromJsonAsync<IamApiResponse<bool>>(Json, cancellationToken);
+        if (api is null || !api.Success || api.Data is false)
+            return Result.Failure(new Error("iam.failed", api?.Message ?? "Modify role failed."));
+
+        return Result.Success();
+    }
+
     public async Task<Result> LogoutAsync(string userId, CancellationToken cancellationToken = default)
     {
         var payload = new LogoutRequestDto { UserId = userId };
@@ -133,4 +177,5 @@ public class IdentityService(
 
         return Result.Success();
     }
+
 }
