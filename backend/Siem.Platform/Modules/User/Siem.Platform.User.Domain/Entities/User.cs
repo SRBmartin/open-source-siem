@@ -48,19 +48,12 @@ public class User : Entity
         return issued;
     }
 
-    public bool TryActivateWithToken(string tokenValue, DateTimeOffset? now = null)
+    public void MarkActivated(DateTimeOffset? at = null)
     {
-        if (IsActivated) return true;
-
-        var t = _activationTokens
-            .FirstOrDefault(t => !t.IsUsed && !t.IsExpired(now) && t.Token.Equals(tokenValue));
-
-        if (t is null) return false;
-
-        t.MarkUsed();
-        ActivatedAt = now ?? DateTimeOffset.UtcNow;
-
-        return true;
+        if (!IsActivated)
+        {
+            ActivatedAt = at ?? DateTimeOffset.UtcNow;
+        }
     }
 
     public void Delete()

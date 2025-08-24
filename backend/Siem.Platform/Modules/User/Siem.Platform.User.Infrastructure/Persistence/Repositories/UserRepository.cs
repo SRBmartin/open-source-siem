@@ -13,6 +13,17 @@ public class UserRepository (
         dbContext.Add(user);
     }
 
+    public async Task<Domain.Entities.User?> GetUserByUserId(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var user = await dbContext.Users
+            .FirstOrDefaultAsync(
+                t => t.Id == userId &&
+                !t.IsDeleted,
+            cancellationToken);
+
+        return user;
+    }
+
     public Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return dbContext.Users

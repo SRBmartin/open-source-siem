@@ -42,6 +42,24 @@ public class IdentityService(
         return Result<CreateUserResponseDto>.Success(new CreateUserResponseDto(api.Data.ExternalId));
     }
 
+    public async Task<Result> VerifyEmailAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        var response = await httpClient.PostAsync($"api/users/{userId}/verify-email", content: null, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            var body = await response.Content.ReadAsStringAsync(cancellationToken);
+            return Result.Failure(new Error("iam.http_error", $"While verifying email service returned {(int)response.StatusCode}. {body}"));
+        }
+
+        var apiResponse = await response.Content.ReadFromJsonAsync<IamApiResponse<object?>>(Json, cancellationToken);
+        if (apiResponse is null || !apiResponse.Success)
+        {
+            return Result.Failure(new Error("iam.deserialize", "Empty or unsuccessful IAM response while verifying email."));
+        }
+
+        return Result.Success();
+    }
+
     public async Task<Result<bool>> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         var response = await httpClient.GetAsync($"api/users/exists?email={Uri.EscapeDataString(email)}", cancellationToken);
