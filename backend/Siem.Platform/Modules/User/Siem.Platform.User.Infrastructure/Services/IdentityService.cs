@@ -3,6 +3,7 @@ using Siem.Platform.User.Application.Contracts;
 using Siem.Platform.User.Application.DTOs.Identity.User.Create;
 using Siem.Platform.User.Application.DTOs.Identity.User.Login;
 using Siem.Platform.User.Application.DTOs.Identity.User.Password;
+using Siem.Platform.User.Application.DTOs.Identity.User.Retrieve;
 using Siem.Platform.User.Application.DTOs.Identity.User.Roles;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -178,4 +179,35 @@ public class IdentityService(
         return Result.Success();
     }
 
+    public async Task<Result<List<IamUserListItemDto>>> GetIamUsersAsync(int first = 0, int max = 200, bool includeRoles = true, string? search = null, CancellationToken cancellationToken = default)
+    {
+        var query = new List<string>
+    {
+        $"first={first}",
+        $"max={max}",
+        $"includeRoles={(includeRoles ? "true" : "false")}"
+    };
+        if (!string.IsNullOrWhiteSpace(search))
+            query.Add($"search={Uri.EscapeDataString(search)}");
+
+        var url = $"api/users?{string.Join("&", query)}";
+
+        var response = await httpClient.GetAsync(url, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            var body = await response.Content.ReadAsStringAsync(cancellationToken);
+            return Result<List<IamUserListItemDto>>.Failure(new Error("iam.http_error", $"IAM users GET returned {(int)response.StatusCode}. {body}"));
+        }
+
+        var apiResponse = await response.Content.ReadFromJsonAsync<IamApiResponse<List<IamUserListItemDto>>>(Json, cancellationToken);
+        if (apiResponse is null || !apiResponse.Success || apiResponse.Data is null)
+            return Result<List<IamUserListItemDto>>.Failure(
+                new Error("iam.deserialize", apiResponse?.Message ?? "Empty or unsuccessful IAM response."));
+
+        var normalized = apiResponse.Data
+            .Select(u => u with { Roles = (u.Roles ?? Array.Empty<string>()) })
+            .ToList();
+
+        return Result<List<IamUserListItemDto>>.Success(normalized);
+    }
 }

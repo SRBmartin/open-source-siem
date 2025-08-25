@@ -36,6 +36,16 @@ public class UserRepository (
         return user;
     }
 
+    public async Task<IReadOnlyList<Domain.Entities.User>> GetAllUsers(CancellationToken cancellationToken = default)
+    {
+        var users = await dbContext.Users
+            .AsNoTracking()
+            .Where(t => !t.IsDeleted)
+            .ToListAsync(cancellationToken);
+
+        return users;
+    }
+
     public Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return dbContext.Users

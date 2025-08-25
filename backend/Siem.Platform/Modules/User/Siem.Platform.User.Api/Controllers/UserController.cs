@@ -5,6 +5,7 @@ using Siem.Platform.User.Api.Security;
 using Siem.Platform.User.Application.DTOs.User;
 using Siem.Platform.User.Application.Features.User.ChangePassword;
 using Siem.Platform.User.Application.Features.User.CreateUser;
+using Siem.Platform.User.Application.Features.User.GetAllUsers;
 using Siem.Platform.User.Application.Features.User.ModifyRole;
 
 namespace Siem.Platform.User.Api.Controllers;
@@ -60,6 +61,17 @@ public class UserController (
         );
 
         var response = await mediator.Send(command, cancellationToken);
+
+        return this.ToActionResult(response);
+    }
+
+    [HttpGet]
+    [RequireRealmRole(UserRoles.Administrator)]
+    public async Task<IActionResult> GetUsers([FromQuery] int? first, [FromQuery] int? max, [FromQuery] string? search, CancellationToken cancellationToken)
+    {
+        var query = new GetAllUsersQuery(first, max, search);
+
+        var response = await mediator.Send(query, cancellationToken);
 
         return this.ToActionResult(response);
     }
