@@ -2,6 +2,7 @@
 using Iam.Platform.Infrastructure.DependencyInjection;
 using Serilog;
 using Microsoft.OpenApi.Models;
+using Iam.Platform.Api.Security;
 
 namespace Iam.Platform.Api.DependencyInjection;
 
@@ -60,6 +61,8 @@ public static class ServiceCollectionExtensions
             });
 
         });
+
+        services.AddKeycloakAuthentication(config);
 
         return services;
     }

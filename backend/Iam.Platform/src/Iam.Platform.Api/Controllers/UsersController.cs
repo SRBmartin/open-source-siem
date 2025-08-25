@@ -1,4 +1,5 @@
 ﻿using EBus.Abstractions;
+using Iam.Platform.Api.Security;
 using Iam.Platform.Api.Utilities;
 using Iam.Platform.Application.DTOs.User;
 using Iam.Platform.Application.Features.User.ActivateEmail;
@@ -18,6 +19,7 @@ public class UsersController (
 ) : ControllerBase
 {
     [HttpPost]
+    [RequireClientAccessToken]
     public async Task<IActionResult> Create([FromBody] CreateUserDto dto, CancellationToken cancellationToken)
     {
         var response = await mediator.Send(new CreateUserCommand(dto), cancellationToken);
@@ -36,6 +38,7 @@ public class UsersController (
     }
 
     [HttpDelete("{id}")]
+    [RequireClientAccessToken]
     public async Task<IActionResult> Delete([FromRoute] string id, CancellationToken cancellationToken)
     {
         var command = new DeleteUserCommand(id);
@@ -46,6 +49,7 @@ public class UsersController (
     }
 
     [HttpGet("exists")]
+    [RequireClientAccessToken]
     public async Task<IActionResult> Exists([FromQuery] string email, CancellationToken cancellationToken)
     {
         var command = new ExistsUserCommand(email);
@@ -66,6 +70,7 @@ public class UsersController (
     }
 
     [HttpPost("{id}/roles")]
+    [RequireClientAccessToken]
     public async Task<IActionResult> ModifyRole([FromRoute] string id, [FromBody] ModifyUserRoleRequestDto request, CancellationToken cancellationToken)
     {
         var command = new ModifyRoleCommand(id, request.Role, request.Action);
