@@ -1,5 +1,6 @@
 ﻿using EBus.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using Siem.Platform.User.Api.Security;
 using Siem.Platform.User.Application.DTOs.Auth;
 using Siem.Platform.User.Application.Features.Auth.LoginCommand;
 using Siem.Platform.User.Application.Features.Auth.LogoutCommand;
@@ -33,9 +34,14 @@ public class AuthController (
     }
 
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout([FromBody] LogoutRequestDto request, CancellationToken cancellationToken)
+    [RequireBearerToken]
+    public async Task<IActionResult> Logout(CancellationToken cancellationToken)
     {
-        var command = new LogoutCommand(request.UserId);
+        var userId = User.GetUserId();
+        if (string.IsNullOrWhiteSpace(userId))
+            return Unauthorized();
+
+        var command = new LogoutCommand(userId);
 
         var response = await mediator.Send(command, cancellationToken);
 
