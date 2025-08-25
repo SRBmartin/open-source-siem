@@ -8,6 +8,7 @@ using Siem.Platform.User.Application.Contracts;
 using Microsoft.Extensions.Options;
 using Siem.Platform.User.Infrastructure.Services;
 using Siem.Platform.Shared.Infrastructure.Configuration;
+using Siem.Platform.Shared.Infrastructure.Http;
 
 namespace Siem.Platform.User.Infrastructure.DependencyInjection;
 
@@ -35,7 +36,8 @@ public static class ServiceCollectionExtensions
             pipelineName: "iam",
             baseAddressFactory: sp => new Uri(sp.GetRequiredService<IOptions<ServicesConfiguration>>().Value.IamPlatform),
             timeout: TimeSpan.FromSeconds(30)
-        );
+        )
+        .AddHttpMessageHandler<ClientAccessTokenHandler>();
 
         #endregion
 

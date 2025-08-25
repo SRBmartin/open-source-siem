@@ -17,6 +17,7 @@ public class UserController (
 ) : ControllerBase
 {
     [HttpPost]
+    [RequireRealmRole(UserRoles.Administrator)]
     public async Task<IActionResult> Create([FromBody] CreateUserDto body, CancellationToken cancellationToken)
     {
         var command = new CreateUserCommand(body.Email, body.FirstName, body.LastName);
@@ -42,6 +43,7 @@ public class UserController (
     }
 
     [HttpPost("roles")]
+    [RequireRealmRole(UserRoles.Administrator)]
     public async Task<IActionResult> ModifyRole([FromBody] ModifyUserRoleRequestDto request, CancellationToken cancellationToken)
     {
         var initiatorUserId = User.GetUserId();

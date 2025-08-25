@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Siem.Platform.Shared.Application.Abstractions.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace Siem.Platform.User.Api.Security;
 
@@ -45,6 +46,28 @@ public sealed class BearerTokenFilter(
             if (!string.IsNullOrEmpty(sub) && !claims.Any(c => c.Type == ClaimTypes.NameIdentifier))
             {
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, sub));
+            }
+
+            var realmAccess = jwt.Claims.FirstOrDefault(c => c.Type == "realm_access")?.Value;
+            if (!string.IsNullOrWhiteSpace(realmAccess))
+            {
+                try
+                {
+                    using var doc = JsonDocument.Parse(realmAccess);
+                    if (doc.RootElement.TryGetProperty("roles", out var rolesElement) &&
+                        rolesElement.ValueKind == JsonValueKind.Array)
+                    {
+                        foreach (var r in rolesElement.EnumerateArray())
+                        {
+                            var role = r.GetString();
+                            if (!string.IsNullOrWhiteSpace(role))
+                            {
+                                claims.Add(new Claim(ClaimTypes.Role, role!));
+                            }
+                        }
+                    }
+                }
+                catch { /* Ignore malformed realm_access */ }
             }
 
             var identity = new ClaimsIdentity(claims, authenticationType: "Bearer");
