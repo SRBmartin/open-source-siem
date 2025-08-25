@@ -7,7 +7,9 @@ using Iam.Platform.Application.Features.User.ChangePassword;
 using Iam.Platform.Application.Features.User.CreateUser;
 using Iam.Platform.Application.Features.User.DeleteUser;
 using Iam.Platform.Application.Features.User.ExistsUser;
+using Iam.Platform.Application.Features.User.GetUsers;
 using Iam.Platform.Application.Features.User.ModifyRole;
+using Iam.Platform.Application.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Iam.Platform.Api.Controllers;
@@ -78,6 +80,29 @@ public class UsersController (
         var response = await mediator.Send(command, cancellationToken);
 
         return response.ToActionResult(this, nameof(ModifyRole));
+    }
+
+    [HttpGet]
+    [RequireClientAccessToken]
+    [ProducesResponseType(typeof(ApiResponse<List<UserListItemDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetUsers(
+        [FromQuery] int first = 0,
+        [FromQuery] int max = 50,
+        [FromQuery] bool includeRoles = false,
+        [FromQuery] string? search = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var query = new GetUsersQuery(
+            First: first,
+            Max: max,
+            IncludeRoles: includeRoles,
+            Search: search
+        );
+
+        var response = await mediator.Send(query, cancellationToken);
+
+        return response.ToActionResult(this, nameof(GetUsers));
     }
 
 }

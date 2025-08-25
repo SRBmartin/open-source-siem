@@ -23,4 +23,5 @@ public interface IKeycloakUserService
     Task<IReadOnlyList<KeycloakRole>> GetUserRealmRolesAsync(string userId, CancellationToken cancellationToken = default);
     Task<bool> AddRealmRolesToUserAsync(string userId, IEnumerable<KeycloakRole> roles, CancellationToken cancellationToken = default);
     Task<bool> RemoveRealmRolesFromUserAsync(string userId, IEnumerable<KeycloakRole> roles, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<KeycloakUser>> GetUsersAsync(int first = 0, int max = 50, string? search = null, CancellationToken cancellationToken = default);
 }

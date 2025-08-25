@@ -161,4 +161,26 @@ public class KeycloakUserService (
         return resp.IsSuccessStatusCode;
     }
 
+    public async Task<IReadOnlyList<KeycloakUser>> GetUsersAsync(int first = 0, int max = 50, string? search = null, CancellationToken cancellationToken = default)
+    {
+        var q = new List<string>();
+        if (first > 0) q.Add($"first={first}");
+        if (max > 0) q.Add($"max={max}");
+        if (!string.IsNullOrWhiteSpace(search)) q.Add($"search={Uri.EscapeDataString(search)}");
+
+        var url = $"/admin/realms/{_options.Realm}/users";
+        if (q.Count > 0) url += "?" + string.Join("&", q);
+
+        var resp = await httpClient.GetAsync(url, cancellationToken);
+        if (!resp.IsSuccessStatusCode)
+            return Array.Empty<KeycloakUser>();
+
+        var json = await resp.Content.ReadAsStringAsync(cancellationToken);
+        var users = JsonSerializer.Deserialize<List<KeycloakUser>>(json, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+
+        return users ?? new List<KeycloakUser>();
+    }
 }
