@@ -35,7 +35,7 @@ class KafkaTopicProvisionerAdapter (
                   ["min.insync.replicas"] = _options.MinInSyncReplicas.ToString(),
                   ["unclean.leader.election.enable"] = "false",
                   ["retention.ms"] = r.ToString(),
-                  ["compression.type"] = "zstd"
+                  ["compression.type"] = "gzip"
                 }},
             new TopicSpecification {
                 Name = BuildDlq(tag), NumPartitions = Math.Max(1, p/2), ReplicationFactor = rf,

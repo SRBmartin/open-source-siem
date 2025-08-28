@@ -9,6 +9,7 @@ using Siem.Platform.Logging.Infrastructure.Kafka.Configuration;
 using Siem.Platform.Logging.Infrastructure.Kafka.Services;
 using Siem.Platform.Logging.Infrastructure.Persistence.Contexts;
 using Siem.Platform.Logging.Infrastructure.Persistence.Repositories;
+using Siem.Platform.Logging.Infrastructure.Services;
 using Siem.Platform.Shared.Infrastructure.Http;
 
 namespace Siem.Platform.Logging.Infrastructure.DependencyInjection;
@@ -45,6 +46,9 @@ public static class ServiceCollectionExtensions
             }
         )
         .AddHttpMessageHandler<ClientAccessTokenHandler>();
+
+        services.AddOpenSearch(new Uri("http://opensearch:9200")); //TODO: Move to appsettings.json
+        services.AddScoped<ILogSearchService, OpenSearchLogSearchService>();
 
         return services;
     }
