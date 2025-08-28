@@ -1,0 +1,10 @@
+[
+  {
+    "name": "administrator",
+    "description": "Administrator with full access."
+  },
+  {
+    "name": "monitoring",
+    "description": "Monitoring role with read-only access."
+  }
+]

@@ -1,0 +1,80 @@
+## Build results
+bin/
+obj/
+out/
+[Bb]uild/
+[Ll]og/
+
+## VS-specific folders
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider
+.idea/
+*.sln.iml
+
+## Visual Studio Code
+.vscode/
+
+## Dotnet CLI
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## ASP.NET
+wwwroot/*.cache
+wwwroot/*.min.js
+wwwroot/*.min.css
+node_modules/
+bower_components/
+jspm_packages/
+
+## Logs and DB
+*.log
+*.tlog
+*.ldf
+*.mdf
+*.sql
+*.sqlite
+
+## Tests
+TestResults/
+*.coverage
+*.coveragexml
+*.trx
+
+## Packages
+*.nupkg
+*.snupkg
+packages/
+*.Symbols.nupkg
+
+## EF Core Migrations history
+Migrations/*.Designer.cs
+Migrations/*Snapshot.cs
+
+## Resharper / JetBrains
+_ReSharper*/
+*.DotSettings.user
+
+## Docker
+*.pid
+*.seed
+docker-compose.override.yml
+.env
+
+## Secrets (make sure secrets are handled via safe storage!)
+secrets.json
+appsettings.*.local.json
+appsettings.Development.json
+*.pfx
+*.key
+*.pem
+*.crt
+
+## Others
+*.DS_Store
+Thumbs.db
