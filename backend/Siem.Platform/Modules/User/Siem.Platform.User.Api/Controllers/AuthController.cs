@@ -1,6 +1,6 @@
 ﻿using EBus.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using Siem.Platform.User.Api.Security;
+using Siem.Platform.Shared.Application.Abstractions.Security;
 using Siem.Platform.User.Application.DTOs.Auth;
 using Siem.Platform.User.Application.Features.Auth.LoginCommand;
 using Siem.Platform.User.Application.Features.Auth.LogoutCommand;

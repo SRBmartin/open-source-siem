@@ -1,0 +1,41 @@
+extensions:
+  oidc:
+    providers:
+      - issuer_url: http://keycloak:8081/realms/siem
+        audience: siem-platform
+
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+        include_metadata: true
+        auth:
+          authenticator: oidc
+      grpc:
+        endpoint: 0.0.0.0:4317
+        include_metadata: true
+        auth:
+          authenticator: oidc
+
+processors:
+  batch:
+    metadata_keys: ["x-siem-topic"]
+
+exporters:
+  kafka:
+    brokers: ["kafka-1:9092","kafka-2:9092","kafka-3:9092"]
+    logs:
+      topic_from_metadata_key: x-siem-topic
+      encoding: otlp_json
+    producer:
+      required_acks: -1
+      compression: gzip
+
+service:
+  extensions: [oidc]
+  pipelines:
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [kafka]

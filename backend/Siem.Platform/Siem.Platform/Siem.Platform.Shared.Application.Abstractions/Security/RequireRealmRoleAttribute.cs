@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 
-namespace Siem.Platform.User.Api.Security;
+namespace Siem.Platform.Shared.Application.Abstractions.Security;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 public class RequireRealmRoleAttribute : TypeFilterAttribute

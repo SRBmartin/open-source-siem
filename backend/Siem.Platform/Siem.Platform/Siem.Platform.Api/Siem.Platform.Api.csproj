@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Modules\Logging\Siem.Platform.Logging.Api\Siem.Platform.Logging.Api.csproj" />
     <ProjectReference Include="..\..\Modules\User\Siem.Platform.User.Api\Siem.Platform.User.Api.csproj" />
     <ProjectReference Include="..\Siem.Platform.Shared.Application.Abstractions\Siem.Platform.Shared.Application.Abstractions.csproj" />
     <ProjectReference Include="..\Siem.Platform.Shared.Infrastructure\Siem.Platform.Shared.Infrastructure.csproj" />

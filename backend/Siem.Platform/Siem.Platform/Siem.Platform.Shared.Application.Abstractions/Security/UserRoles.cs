@@ -1,4 +1,4 @@
-﻿namespace Siem.Platform.User.Api.Security;
+﻿namespace Siem.Platform.Shared.Application.Abstractions.Security;
 
 public static class UserRoles
 {

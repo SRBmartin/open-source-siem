@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Serilog;
 using EBus.Registration;
 using Siem.Platform.Shared.Infrastructure.DependencyInjection;
+using Siem.Platform.Logging.Api.DependencyInjection;
 
 namespace Siem.Platform.Api.DependencyInjection;
 
@@ -26,9 +27,11 @@ public static class ServiceCollectionExtensions
         services.AddSharedInfrastructureServices(config);
 
         services.AddUserApiServices(config);
+        services.AddLoggingApiServices(config);
 
         var mvc = services.AddControllers();
         mvc.AddApplicationPart(typeof(ServiceCollectionExtensions).Assembly);
+        mvc.AddLoggingModuleControllers();
         mvc.AddUserModuleControllers();
 
         services.AddEndpointsApiExplorer();

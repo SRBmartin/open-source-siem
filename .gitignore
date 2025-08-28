@@ -1,0 +1,5 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/backend/Siem.Platform/Modules/Logging/Siem.Platform.Logging.Infrastructure/Kafka/Configuration/editorconfig
