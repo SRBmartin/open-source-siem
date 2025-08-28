@@ -1,7 +1,7 @@
 ﻿using EBus.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using Siem.Platform.Shared.Application.Abstractions.Security;
 using Siem.Platform.User.Api.Http;
-using Siem.Platform.User.Api.Security;
 using Siem.Platform.User.Application.DTOs.User;
 using Siem.Platform.User.Application.Features.User.ChangePassword;
 using Siem.Platform.User.Application.Features.User.CreateUser;

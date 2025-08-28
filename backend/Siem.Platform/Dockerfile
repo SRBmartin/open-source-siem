@@ -23,8 +23,12 @@ COPY Siem.Platform/Siem.Platform.Shared.Infrastructure/Siem.Platform.Shared.Infr
 COPY Modules/User/Siem.Platform.User.Application/Siem.Platform.User.Application.csproj Modules/User/Siem.Platform.User.Application/
 COPY Modules/User/Siem.Platform.User.Domain/Siem.Platform.User.Domain.csproj Modules/User/Siem.Platform.User.Domain/
 COPY Modules/User/Siem.Platform.User.Infrastructure/Siem.Platform.User.Infrastructure.csproj Modules/User/Siem.Platform.User.Infrastructure/
-
 COPY Modules/User/Siem.Platform.User.Api/Siem.Platform.User.Api.csproj Modules/User/Siem.Platform.User.Api/
+
+COPY Modules/Logging/Siem.Platform.Logging.Application/Siem.Platform.Logging.Application.csproj Modules/Logging/Siem.Platform.Logging.Application/
+COPY Modules/Logging/Siem.Platform.Logging.Domain/Siem.Platform.Logging.Domain.csproj Modules/Logging/Siem.Platform.Logging.Domain/
+COPY Modules/Logging/Siem.Platform.Logging.Infrastructure/Siem.Platform.Logging.Infrastructure.csproj Modules/Logging/Siem.Platform.Logging.Infrastructure/
+COPY Modules/Logging/Siem.Platform.Logging.Api/Siem.Platform.Logging.Api.csproj Modules/Logging/Siem.Platform.Logging.Api/
 
 RUN dotnet restore Siem.Platform/Siem.Platform.Api/Siem.Platform.Api.csproj \
     --configfile /root/.nuget/NuGet/NuGet.Config

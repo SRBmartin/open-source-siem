@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace Siem.Platform.User.Api.Security;
+namespace Siem.Platform.Shared.Application.Abstractions.Security;
 
 public sealed class BearerTokenFilter(
     IAuthVerificationService authService
