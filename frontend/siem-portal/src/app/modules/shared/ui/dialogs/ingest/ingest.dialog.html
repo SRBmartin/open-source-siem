@@ -1,0 +1,18 @@
+<div class="hdr">
+    <div class="title">Ingest instructions</div>
+    <div class="subtitle">Send OTLP logs to this endpoint with the header</div>
+  </div>
+
+  <div class="kv">
+    <div><span>OTLP HTTP URL</span><code>{{d.otlpHttpUrl}}</code></div>
+    <div><span>Header name</span><code>{{d.headerName}}</code></div>
+    <div><span>Header value</span><code>{{d.headerValue}}</code></div>
+    <div><span>Token URL</span><code>{{d.authTokenUrl}}</code></div>
+    <div><span>Client ID</span><code>{{d.clientId}}</code></div>
+    <div><span>Audience</span><code>{{d.audience}}</code></div>
+  </div>
+
+  <div class="actions">
+    <button mat-stroked-button cdkCopyToClipboard="{{d.headerValue}}">Copy header value</button>
+    <button mat-raised-button class="btn-primary" cdkCopyToClipboard="{{d.otlpHttpUrl}}">Copy URL</button>
+  </div>

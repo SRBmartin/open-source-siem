@@ -1,0 +1,119 @@
+/* Page framing — same vibe as the panel page */
+.tags {
+  padding: 1rem 1.25rem 2rem;
+  color: var(--white-color);
+
+  .hdr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: .75rem;
+
+    h1 {
+      margin: 0;
+      font-family: var(--font-quicksand);
+      color: var(--white-color);
+    }
+    .sub { margin: .15rem 0 0; color: rgba(255,255,255,.7); }
+  }
+}
+
+/* Card container like before */
+.card {
+  background: linear-gradient(180deg, rgba(124,131,253,.10), rgba(16,13,60,.55));
+  border: 1px solid rgba(124,131,253,.25);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(255,255,255,.05);
+  padding: 1rem 1.1rem 1.25rem;
+}
+
+/* Table wrapper */
+.table-wrap {
+  overflow: auto;
+  border-radius: 14px;
+}
+
+/* Kill any unexpected white backgrounds (UA or lib defaults) */
+.tbl, .tbl thead, .tbl tbody, .tbl tr, .tbl th, .tbl td {
+  background: transparent !important;
+}
+
+/* Table body */
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead th {
+    color: var(--accent-color);
+    text-align: left;
+    font-weight: 600;
+    padding: .75rem .85rem;
+    border-bottom: 1px solid rgba(124,131,253,.25);
+  }
+
+  td {
+    padding: .75rem .85rem;
+    border-bottom: 1px solid rgba(124,131,253,.18);
+    color: rgba(255,255,255,.92);
+    vertical-align: middle;
+  }
+
+  tbody tr:hover {
+    background: linear-gradient(180deg, rgba(150,186,255,.08), rgba(125,237,255,.06));
+  }
+
+  .actions { text-align: right; white-space: nowrap; }
+}
+
+/* Topic badge */
+.tbl code {
+  display: inline-block;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(150,186,255,.35);
+  color: var(--accent-color);
+  font-family: var(--font-montserrat);
+  font-size: .85rem;
+}
+
+/* Role chip */
+.chip {
+  display: inline-block;
+  padding: .25rem .5rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  border: 1px solid rgba(124,131,253,.35);
+  color: rgba(255,255,255,.92);
+  background: rgba(255,255,255,.07);
+}
+
+/* Primary (raised) — same look as panel */
+:host ::ng-deep .btn-primary.mat-mdc-raised-button {
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(124,131,253,.95), rgba(124,131,253,.85)) !important;
+  color: var(--white-color) !important;
+  box-shadow: 0 6px 14px rgba(124,131,253,.25);
+}
+:host ::ng-deep .btn-primary.mat-mdc-raised-button .mdc-button__label {
+  color: var(--white-color) !important;
+}
+:host ::ng-deep .btn-primary.mat-mdc-raised-button:hover {
+  filter: brightness(1.02);
+}
+
+/* Accent (outlined/stroked) */
+:host ::ng-deep .btn-accent.mat-mdc-outlined-button {
+  border-radius: 12px;
+  border-color: rgba(136,255,247,.45) !important;
+  --mdc-outlined-button-outline-color: rgba(136,255,247,.45);
+  color: rgba(255,255,255,.92) !important;
+}
+:host ::ng-deep .btn-accent.mat-mdc-outlined-button .mdc-button__label {
+  color: rgba(255,255,255,.92) !important;
+}
+:host ::ng-deep .btn-accent.mat-mdc-outlined-button:hover {
+  background: linear-gradient(180deg, rgba(136,255,247,.12), rgba(136,255,247,.08));
+}

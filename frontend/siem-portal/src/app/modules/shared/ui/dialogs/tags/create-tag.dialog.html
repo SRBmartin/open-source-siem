@@ -1,0 +1,29 @@
+<!-- src/app/modules/shared/ui/dialogs/tags/create-tag.dialog.html -->
+<div class="hdr">
+  <div class="title">Create tag</div>
+  <div class="subtitle">Define topic settings for your logs</div>
+</div>
+
+<form [formGroup]="form" class="grid" (ngSubmit)="submit()">
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" placeholder="">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Partitions</mat-label>
+    <input matInput type="number" formControlName="partitions" min="1">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Retention (days)</mat-label>
+    <input matInput type="number" formControlName="retentionDays" min="1">
+  </mat-form-field>
+
+  <div class="actions full">
+    <button mat-stroked-button type="button" (click)="cancel()" [disabled]="creating">Cancel</button>
+    <button mat-raised-button class="btn-primary" type="submit" [disabled]="creating || form.invalid">
+      {{ creating ? 'Creating…' : 'Create' }}
+    </button>
+  </div>
+</form>

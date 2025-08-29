@@ -1,0 +1,42 @@
+<!-- src/app/modules/shared/ui/dialogs/tags/manage-access.dialog.html -->
+<div class="hdr">
+  <div class="title">Manage access</div>
+  <div class="subtitle">Tag: <strong>{{ data.name }}</strong></div>
+</div>
+
+<div class="list card">
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of (tag()?.accesses || [])">
+        <td><code>{{ a.userId }}</code></td>
+        <td><span class="chip">{{ a.role }}</span></td>
+      </tr>
+      <tr *ngIf="!tag()?.accesses?.length">
+        <td colspan="2" class="empty">No access entries yet.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<form [formGroup]="form" class="grid">
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>User ID (GUID)</mat-label>
+    <input matInput formControlName="userId" placeholder="9ecbd5f2-...">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Role</mat-label>
+    <input matInput formControlName="role" placeholder="Admin / Reader">
+  </mat-form-field>
+
+  <div class="actions full">
+    <button mat-stroked-button type="button" (click)="close()">Close</button>
+    <button mat-raised-button class="btn-primary" type="button" (click)="grant()" [disabled]="form.invalid">Grant</button>
+  </div>
+</form>

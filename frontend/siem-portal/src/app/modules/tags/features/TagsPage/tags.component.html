@@ -1,0 +1,38 @@
+<header class="hdr">
+  <div class="left">
+    <h1>Log Tags</h1>
+    <p class="sub">Create tags, view topics & manage access</p>
+  </div>
+
+  <button mat-raised-button class="btn-primary" (click)="openCreate()">+ Tag</button>
+</header>
+
+<div class="card">
+  <div class="table-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Topic</th>
+          <th>My role</th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of tags()">
+          <td>{{ t.name }}</td>
+          <td><code>{{ t.topic }}</code></td>
+          <td><span class="chip">{{ t.myRole }}</span></td>
+          <td class="actions">
+            <button mat-stroked-button class="btn-accent" (click)="openIngest(t)">Ingest</button>
+            <button mat-stroked-button class="btn-accent" (click)="manageAccess(t)">Access</button>
+          </td>
+        </tr>
+
+        <tr *ngIf="!tags().length && !loading()">
+          <td colspan="4" class="empty">No tags yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+/* src/app/modules/shared/ui/dialogs/tags/create-tag.dialog.scss */
+.hdr { display: grid; gap: .25rem; margin-bottom: 1rem; }
+.title { font-family: var(--font-quicksand); font-size: 1.4rem; color: var(--primary-color); }
+.subtitle { color: #555; }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem 1rem; }
+.full { grid-column: 1 / -1; }
+
+.actions {
+  display: flex; justify-content: flex-end; gap: .5rem; margin-top: .5rem;
+  .btn-primary {
+    border-radius: 12px; color: var(--white-color);
+    background: linear-gradient(180deg, rgba(124,131,253,.95), rgba(124,131,253,.85));
+    box-shadow: 0 6px 14px rgba(124,131,253,.25);
+  }
+}

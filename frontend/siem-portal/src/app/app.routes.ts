@@ -10,6 +10,10 @@ export const routes: Routes = [
             {
                 path: 'panel',
                 loadComponent: () => import('./modules/user/features/panel/panel.component').then(m => m.UserPanelComponent)
+            },
+            {
+                path: 'tags',
+                loadComponent: () => import('./modules/tags/features/TagsPage/tags.component').then(m => m.TagsComponent)
             }
         ]
     },
