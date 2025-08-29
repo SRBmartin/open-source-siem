@@ -1,0 +1,112 @@
+/* settings.component.scss */
+.settings {
+  padding: 1rem 1.25rem 2rem;
+  color: var(--white-color);
+
+  .hdr {
+    margin-bottom: .75rem;
+    h1 {
+      margin: 0;
+      font-family: var(--font-quicksand);
+      color: var(--white-color);
+    }
+    .sub { margin: .15rem 0 0; color: rgba(255,255,255,.7); }
+  }
+}
+
+.card {
+  padding: 1rem 1.1rem 1.25rem;
+  border-radius: 20px;
+  border: 1px solid rgba(124,131,253,.25);
+  background: linear-gradient(180deg, rgba(124,131,253,.12), rgba(16,13,60,.60));
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(255,255,255,.05);
+
+  .sect-title {
+    margin: 0 0 .75rem;
+    font-family: var(--font-quicksand);
+    color: var(--accent-color);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .9rem 1rem;
+
+  .full { grid-column: 1 / -1; }
+}
+
+/* ===== Material fields on dark surface (scoped via .dark-field) ===== */
+:host {
+  --siem-outline: rgba(150,186,255,.45);
+  --siem-outline-focus: rgba(150,186,255,.9);
+  --siem-surface: rgba(255,255,255,.06);
+}
+
+.dark-field {
+  /* container surface + rounding */
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    background: var(--siem-surface);
+    border-radius: 12px;
+  }
+
+  /* outline colors */
+  ::ng-deep
+  .mdc-text-field--outlined .mdc-notched-outline__leading,
+  ::ng-deep
+  .mdc-text-field--outlined .mdc-notched-outline__trailing,
+  ::ng-deep
+  .mdc-text-field--outlined .mdc-notched-outline__notch {
+    border-color: var(--siem-outline) !important;
+  }
+  ::ng-deep
+  .mdc-text-field--outlined.mdc-text-field--focused
+  .mdc-notched-outline__leading,
+  ::ng-deep
+  .mdc-text-field--outlined.mdc-text-field--focused
+  .mdc-notched-outline__trailing,
+  ::ng-deep
+  .mdc-text-field--outlined.mdc-text-field--focused
+  .mdc-notched-outline__notch {
+    border-color: var(--siem-outline-focus) !important;
+  }
+
+  /* text/labels/icons */
+  ::ng-deep .mat-mdc-input-element { color: var(--white-color) !important; }
+  ::ng-deep .mdc-floating-label,
+  ::ng-deep .mat-mdc-form-field-label { color: rgba(255,255,255,.85) !important; }
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper { color: rgba(255,255,255,.75) !important; }
+  ::ng-deep .mat-mdc-form-field-icon-suffix,
+  ::ng-deep .mat-mdc-icon-button,
+  ::ng-deep .mat-icon { color: rgba(255,255,255,.92) !important; }
+}
+
+/* requirement chips like panel chips */
+.reqs {
+  display: flex; flex-wrap: wrap; gap: .4rem;
+  .chip {
+    padding: .25rem .5rem;
+    border-radius: 999px;
+    font-size: .8rem;
+    border: 1px solid rgba(124,131,253,.35);
+    color: rgba(255,255,255,.85);
+    background: rgba(255,255,255,.05);
+    &.ok {
+      border-color: rgba(136,255,247,.5);
+      background: linear-gradient(180deg, rgba(136,255,247,.2), rgba(136,255,247,.1));
+    }
+  }
+}
+
+.actions {
+  display: flex; justify-content: flex-end; margin-top: .25rem;
+  .btn-primary {
+    border-radius: 12px;
+    color: var(--white-color);
+    background:
+      linear-gradient(180deg, rgba(124,131,253,.95), rgba(124,131,253,.85));
+    box-shadow: 0 6px 14px rgba(124,131,253,.25);
+  }
+}

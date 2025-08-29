@@ -25,7 +25,7 @@ export class SidebarComponent {
     { label: 'Users', path: '/panel', icon: 'dashboard' },
     { label: 'Logs',      path: '/logs',      icon: 'list' },
     { label: 'Tags',      path: '/tags',      icon: 'tag' },
-    { label: 'Settings',  path: '/settings',  icon: 'settings' },
+    { label: 'Settings',  path: '/user/settings',  icon: 'settings' },
   ];
 
   onLogoutClick(): void {

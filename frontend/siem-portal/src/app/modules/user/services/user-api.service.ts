@@ -38,4 +38,9 @@ export class UserApiService {
   modifyRole(targetUserId: string, action: 'add'|'remove', role: string) {
     return this.http.post<void>(`${this.base}/roles`, { targetUserId, action, role });
   }
+
+  changePassword(dto: { currentPassword: string; newPassword: string }): Observable<void> {
+    return this.http.post<void>(`${this.base}/change-password`, dto);
+  }
+
 }
