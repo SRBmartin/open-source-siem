@@ -1,2 +1,9 @@
-<router-outlet />
+<div class="app-shell" [class.logged-in]="(isLoggedIn$ | async) === true">
+  <app-sidebar *ngIf="(isLoggedIn$ | async) === true"></app-sidebar>
+
+  <main class="app-content">
+    <router-outlet />
+  </main>
+</div>
+
 <app-loader></app-loader>

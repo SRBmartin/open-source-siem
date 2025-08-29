@@ -1,0 +1,32 @@
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo">
+      <!-- Minimal logo using your palette -->
+      <span class="dot"></span>
+    </div>
+    <span class="brand-text">SIEM Portal</span>
+  </div>
+
+  <nav class="nav">
+    <a *ngFor="let item of navItems"
+       [routerLink]="item.path"
+       routerLinkActive="active"
+       class="nav-item">
+      <span class="icon" [attr.data-icon]="item.icon"></span>
+      <span class="label">{{ item.label }}</span>
+    </a>
+  </nav>
+
+  <div class="spacer"></div>
+
+  <div class="footer">
+    <a class="nav-item muted" routerLink="/help">
+      <span class="icon" data-icon="help"></span>
+      <span class="label">Help</span>
+    </a>
+    <button type="button" class="nav-item danger" (click)="onLogoutClick()">
+        <span class="icon" data-icon="logout"></span>
+        <span class="label">Sign out</span>
+    </button>
+  </div>
+</aside>

@@ -6,7 +6,10 @@ const EXPIRES_AT_KEY   = 'siem.expires_at_utc';
 
 @Injectable({ providedIn: 'root' })
 export class JwtStorageService {
-  /** Store tokens + computed expiration (if not provided) */
+  readonly accessTokenKey = 'siem:access_token';
+  readonly refreshTokenKey = 'siem:refresh_token';
+  readonly expiresAtKey    = 'siem:expires_at';
+  
   setTokens(accessToken: string, refreshToken?: string, expiresAtUtc?: string) {
     localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
     if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);

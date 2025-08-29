@@ -1,0 +1,21 @@
+<div class="dlg">
+  <div class="hdr">
+    <div class="badge">⚙</div>
+    <div class="title">Sign out</div>
+    <div class="subtitle">Are you sure you want to sign out?</div>
+  </div>
+
+  <div class="err" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+  <div class="actions">
+    <button mat-button (click)="cancel()" [disabled]="isLoading">Cancel</button>
+
+    <button mat-raised-button color="warn" class="btn-danger"
+            (click)="confirm()" [disabled]="isLoading">
+      <ng-container *ngIf="!isLoading; else loadingTpl">Sign out</ng-container>
+      <ng-template #loadingTpl>
+        <mat-progress-spinner diameter="18" mode="indeterminate"></mat-progress-spinner>
+      </ng-template>
+    </button>
+  </div>
+</div>

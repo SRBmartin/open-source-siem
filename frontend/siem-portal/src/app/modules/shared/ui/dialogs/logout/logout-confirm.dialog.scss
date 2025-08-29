@@ -1,0 +1,74 @@
+/* matches your palette + card glow vibe */
+.dlg {
+  width: min(520px, 90vw);
+  padding: 1.25rem 1.25rem 1rem;
+  background: var(--white-color);
+  border-radius: 18px;
+  border: 1px solid rgba(124, 131, 253, 0.15);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.18),
+    0 2px 6px rgba(124, 131, 253, 0.18);
+  background-image:
+    linear-gradient(var(--white-color), var(--white-color)),
+    radial-gradient(circle at top left, var(--accent-color), var(--white-color));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  .hdr {
+    display: grid;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+
+    .badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--white-color);
+      background:
+        linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+      box-shadow: 0 6px 14px rgba(124, 131, 253, 0.25);
+      margin-bottom: 0.5rem;
+    }
+
+    .title {
+      font-family: var(--font-quicksand);
+      font-size: 1.35rem;
+      color: var(--primary-color);
+    }
+
+    .subtitle {
+      color: #555;
+      font-size: 0.95rem;
+    }
+  }
+
+  .err {
+    color: var(--error-color);
+    background: rgba(220, 53, 69, 0.08);
+    border: 1px solid rgba(220, 53, 69, 0.25);
+    border-radius: 12px;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+
+    .btn-danger {
+      background:
+        linear-gradient(180deg, rgba(220, 53, 69, 0.85), rgba(220, 53, 69, 0.75));
+      color: var(--white-color);
+      border-radius: 12px;
+      box-shadow: 0 6px 14px rgba(220, 53, 69, 0.25);
+
+      &:disabled {
+        opacity: 0.7;
+        box-shadow: none;
+      }
+    }
+  }
+}
