@@ -1,5 +1,5 @@
 export enum RouteNames {
     LandingRoute = '',
     LoginRoute = 'login',
-    RegisterRoute = 'register'
+    EmailVerifyRoute = 'email-verify'
 }

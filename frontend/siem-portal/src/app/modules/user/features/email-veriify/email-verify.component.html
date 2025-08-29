@@ -1,0 +1,24 @@
+<section class="verify-wrap">
+  <div class="card">
+    <div class="badge" [class.ok]="success() === true" [class.bad]="success() === false">
+      <span *ngIf="loading()">⏳</span>
+      <span *ngIf="!loading() && success() === true">✔</span>
+      <span *ngIf="!loading() && success() === false">!</span>
+    </div>
+
+    <h1 class="title">
+      {{ loading() ? 'Verifying…' : (success() ? 'Email verified' : 'Verification error') }}
+    </h1>
+
+    <p class="subtitle">{{ message() }}</p>
+
+    <div class="actions" *ngIf="!loading()">
+      <button mat-raised-button class="btn-primary" (click)="toLogin()">
+        Go to sign in
+        <ng-container *ngIf="success() === true">
+          &nbsp; ({{ countdown() }})
+        </ng-container>
+      </button>
+    </div>
+  </div>
+</section>

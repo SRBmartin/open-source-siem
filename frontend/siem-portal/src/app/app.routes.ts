@@ -14,6 +14,10 @@ export const routes: Routes = [
         ]
     },
     {
+    path: 'email-verify/:userId/:token',
+        loadComponent: () => import('./modules/user/features/email-veriify/email-verify.component').then(m => m.EmailVerifyComponent)
+    },
+    {
         path: 'user',
         children: userRoutes
     },
