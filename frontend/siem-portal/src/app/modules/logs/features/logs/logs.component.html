@@ -1,0 +1,90 @@
+<!-- src/app/modules/logging/features/logs/logs.component.html -->
+<section class="logs">
+  <header class="hdr">
+    <div class="left">
+      <h1>Logs</h1>
+      <p class="sub">Search & inspect log entries</p>
+    </div>
+  </header>
+
+  <!-- Filters -->
+  <div class="card filters">
+    <form [formGroup]="form" (ngSubmit)="search(true)" class="grid">
+      <mat-form-field appearance="outline" class="dark-field">
+        <mat-label>Tag</mat-label>
+        <mat-select formControlName="tagId">
+          <mat-option value="">All tags</mat-option>
+          <mat-option *ngFor="let t of tags()" [value]="t.tagId">{{ t.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="dark-field">
+        <mat-label>Severity</mat-label>
+        <mat-select formControlName="severity">
+          <mat-option value="">All</mat-option>
+          <mat-option *ngFor="let s of severities" [value]="s">{{ s }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full dark-field">
+        <mat-label>Text (Lucene)</mat-label>
+        <input matInput formControlName="text" placeholder="e.g. payment AND (failed OR timeout) AND order_id:84219">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="dark-field">
+        <mat-label>From</mat-label>
+        <input matInput [matDatepicker]="fromPicker" formControlName="from">
+        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="dark-field">
+        <mat-label>To</mat-label>
+        <input matInput [matDatepicker]="toPicker" formControlName="to">
+        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker></mat-datepicker>
+      </mat-form-field>
+
+      <div class="actions full">
+        <button mat-stroked-button type="button" class="btn-accent" (click)="reset()">Reset</button>
+        <button mat-raised-button class="btn-primary" type="submit">Search</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Results -->
+  <div class="card">
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th style="width: 210px;">Time (UTC)</th>
+            <th style="width: 120px;">Severity</th>
+            <th>Message</th>
+            <th style="width: 260px;">Topic</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of hits()" (click)="openDetails(r)" class="clickable">
+            <td>{{ r.timestamp | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td><span class="{{ severityClass(getSeverity(r)) }}">{{ r.severityText || 'n/a' }}</span></td>
+            <td class="ellipsis">{{ r.message || '(no message)' }}</td>
+            <td><code>{{ r.siemTopic || '—' }}</code></td>
+          </tr>
+
+          <tr *ngIf="!hits().length && !loading()">
+            <td colspan="4" class="empty">No logs found.</td>
+          </tr>
+
+          <tr *ngIf="loading()">
+            <td colspan="4" class="empty">Loading…</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="more" *ngIf="nextCursor() && !loading()">
+      <!--<button mat-stroked-button class="btn-accent" (click)="loadMore()">Load more</button> -->
+    </div>
+  </div>
+</section>

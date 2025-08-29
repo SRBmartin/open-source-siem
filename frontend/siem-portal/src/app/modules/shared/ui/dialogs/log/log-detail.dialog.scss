@@ -1,0 +1,70 @@
+/* src/app/modules/logging/features/logs/log-detail.dialog.scss */
+.dlg {
+  width: min(860px, 95vw);
+  padding: 1.25rem;
+  background: var(--white-color);
+  border-radius: 18px;
+  border: 1px solid rgba(124,131,253,.15);
+  box-shadow: 0 12px 28px rgba(0,0,0,.18), 0 2px 6px rgba(124,131,253,.18);
+  background-image:
+    linear-gradient(var(--white-color), var(--white-color)),
+    radial-gradient(circle at top left, var(--accent-color), var(--white-color));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  .hdr {
+    display: grid; gap: .35rem; margin-bottom: .75rem;
+
+    .badge {
+      width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
+      color: var(--white-color);
+      background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+      box-shadow: 0 6px 14px rgba(124,131,253,.25);
+      margin-bottom: .4rem;
+    }
+    .title {
+      font-family: var(--font-quicksand);
+      font-size: 1.25rem;
+      color: var(--primary-color);
+    }
+    .meta {
+      display: flex; flex-wrap: wrap; gap: .4rem .75rem; color: #333;
+      code {
+        background: #f6f6ff; border: 1px solid rgba(124,131,253,.25);
+        padding: .05rem .35rem; border-radius: 8px;
+      }
+    }
+  }
+
+  .msg {
+    margin-bottom: .75rem;
+    .label { font-weight: 600; color: #333; margin-bottom: .25rem; }
+    .bubble {
+      background: #f9fbff; border: 1px solid rgba(150,186,255,.35);
+      padding: .6rem .75rem; border-radius: 12px;
+    }
+  }
+
+  .src {
+    .label { font-weight: 600; color: #333; margin: .25rem 0; }
+    pre {
+      margin: 0; max-height: 50vh; overflow: auto; padding: .9rem 1rem;
+      background: #0f0f24; color: #e9f3ff; border-radius: 12px;
+      border: 1px solid rgba(124,131,253,.25);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: .88rem;
+    }
+  }
+
+  .actions {
+    display: flex; justify-content: flex-end; gap: .5rem; margin-top: 1rem;
+  }
+}
+
+/* Primary button look (same vibe) */
+:host ::ng-deep .btn-primary.mat-mdc-raised-button {
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(124,131,253,.95), rgba(124,131,253,.85)) !important;
+  color: var(--white-color) !important;
+  box-shadow: 0 6px 14px rgba(124,131,253,.25);
+}
