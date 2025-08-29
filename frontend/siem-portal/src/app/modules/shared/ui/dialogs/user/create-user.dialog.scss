@@ -1,0 +1,45 @@
+/* src/app/modules/user/features/panel/create-user.dialog.scss */
+:host {
+  display: block;
+  padding: 1rem 1.25rem 1.25rem;
+  color: #222;
+}
+
+.header {
+  display: grid;
+  gap: .25rem;
+  margin-bottom: 1rem;
+
+  .title {
+    font-family: var(--font-quicksand);
+    font-size: 1.45rem;
+    color: var(--primary-color);
+  }
+  .subtitle { color: #555; }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .85rem 1rem;
+
+  .full { grid-column: 1 / -1; }
+}
+
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+
+  .btn-cancel {
+    border-radius: 10px;
+  }
+  .btn-create {
+    border-radius: 12px;
+    color: var(--white-color);
+    background:
+      linear-gradient(180deg, rgba(124,131,253,.95), rgba(124,131,253,.85));
+    box-shadow: 0 6px 14px rgba(124,131,253,.25);
+  }
+}

@@ -1,0 +1,58 @@
+<!-- src/app/modules/user/features/panel/panel.component.html -->
+<section class="panel">
+  <header class="hdr">
+    <div class="left">
+      <h1>User Management</h1>
+      <p class="sub">Manage roles & create users</p>
+    </div>
+
+    <button *ngIf="(auth.isAdmin$ | async)"
+            mat-raised-button class="btn-primary"
+            (click)="openCreateUser()">
+      + User
+    </button>
+  </header>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Activated</th>
+            <th>Roles</th>
+            <th class="actions">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let u of users()">
+            <td>{{ u.email }}</td>
+            <td>{{ u.firstName }} {{ u.lastName }}</td>
+            <td>
+              <span class="chip" [class.ok]="u.isActivated" [class.bad]="!u.isActivated">
+                {{ u.isActivated ? 'Yes' : 'No' }}
+              </span>
+            </td>
+            <td>
+              <span class="chip" *ngFor="let r of u.roles">{{ r }}</span>
+            </td>
+            <td class="actions">
+              <button mat-stroked-button
+                      class="btn-accent"
+                      *ngIf="(auth.isAdmin$ | async) && !isAdmin(u)"
+                      (click)="toggleMonitoring(u)">
+                {{ hasMonitoring(u) ? 'Remove monitoring' : 'Grant monitoring' }}
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="!users().length">
+            <td colspan="5" class="empty">No users yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

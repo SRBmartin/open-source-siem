@@ -1,0 +1,29 @@
+<!-- src/app/modules/user/features/panel/create-user.dialog.html -->
+<div class="header">
+  <div class="title">Create user</div>
+  <div class="subtitle">Invite a new person to the platform</div>
+</div>
+
+<form [formGroup]="form" class="form-grid" (ngSubmit)="submit()">
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" type="email">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>First name</mat-label>
+    <input matInput formControlName="firstName">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Last name</mat-label>
+    <input matInput formControlName="lastName">
+  </mat-form-field>
+
+  <div class="actions full">
+    <button mat-stroked-button type="button" class="btn-cancel" (click)="cancel()" [disabled]="creating">Cancel</button>
+    <button mat-raised-button color="primary" class="btn-create" type="submit" [disabled]="creating || form.invalid">
+      Create
+    </button>
+  </div>
+</form>

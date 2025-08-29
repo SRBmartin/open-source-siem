@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, startWith, distinctUntilChanged } from 'rxjs';
+import { BehaviorSubject, Observable, tap, startWith, distinctUntilChanged, map } from 'rxjs';
 import { environment } from '../../../environment/environment';
 import { JwtStorageService } from '../../../shared/services/jwt-storage.service';
 import { LoginRequestDto, LoginResponseDto, VerifyEmailDto } from '../models/auth.dtos';
@@ -93,4 +93,22 @@ export class AuthService {
       })
     );
   }
+
+hasRealmRole(role: string): boolean {
+  const token = this.jwtStorage.getAccessToken();
+  if (!token) return false;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const roles: string[] = payload?.realm_access?.roles ?? [];
+    return Array.isArray(roles) && roles.includes(role);
+  } catch {
+    return false;
+  }
+}
+
+isAdmin$ = this.isLoggedIn$.pipe(
+  // re-check on any login state change
+  map(() => this.hasRealmRole('administrator'))
+);
+
 }

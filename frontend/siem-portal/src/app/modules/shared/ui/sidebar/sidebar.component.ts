@@ -22,7 +22,7 @@ export class SidebarComponent {
   private readonly router = inject(Router);
 
   navItems: NavItem[] = [
-    { label: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
+    { label: 'Users', path: '/panel', icon: 'dashboard' },
     { label: 'Logs',      path: '/logs',      icon: 'list' },
     { label: 'Tags',      path: '/tags',      icon: 'tag' },
     { label: 'Settings',  path: '/settings',  icon: 'settings' },
