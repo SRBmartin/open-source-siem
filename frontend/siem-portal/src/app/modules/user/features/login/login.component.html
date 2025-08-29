@@ -49,6 +49,9 @@
             (clickEvent)="onLogin()"
           ></app-button>
         </div>
+        <div *ngIf="errorMsg" class="text-danger" style="margin-top: 0.75rem;">
+          <small>{{ errorMsg }}</small>
+        </div>
       </form>
 
 

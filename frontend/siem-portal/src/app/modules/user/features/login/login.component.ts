@@ -3,8 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { BasicButtonComponent } from '../../../shared/ui/app-button/app-button.component';
 import { BasicInputComponent } from '../../../shared/ui/app-input/app-input.component';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { LoaderService } from '../../../../shared/services/loader.service';
+import { AuthService } from '../../services/auth.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -22,10 +24,13 @@ import { LoaderService } from '../../../../shared/services/loader.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  errorMsg: string | null = null;
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly loaderService: LoaderService
+    private readonly loaderService: LoaderService,
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -36,21 +41,27 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(): void {
-    if (this.loginForm.valid) {
-      const email = this.loginForm.get('email')?.value;
-      const password = this.loginForm.get('password')?.value;
-      console.log('Login with:', { email, password });
-
-      this.loaderService.startLoading();
-      setTimeout(() => {
-        console.log("Loader finished after 3 seconds!");
-        this.loaderService.stopLoading();
-        // Hide your loader or perform the next action here
-      }, 3000); // 3000 milliseconds = 3 seconds
-      
-
-    } else {
+    if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
+      return;
     }
+
+    const email = this.loginForm.get('email')!.value as string;
+    const password = this.loginForm.get('password')!.value as string;
+
+    this.errorMsg = null;
+    this.loaderService.startLoading();
+
+    this.authService
+      .loginAndStore({ username: email, password })
+      .pipe(finalize(() => this.loaderService.stopLoading()))
+      .subscribe({
+        next: () => {
+          this.router.navigateByUrl('/');
+        },
+        error: (err) => {
+          this.errorMsg = 'Invalid credentials.';
+        }
+      });
   }
 }

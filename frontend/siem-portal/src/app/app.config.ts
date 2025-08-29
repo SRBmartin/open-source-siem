@@ -7,6 +7,8 @@ import { MatButtonModule  } from '@angular/material/button';
 
 import { routes } from './app.routes';
 import { ToastrModule } from 'ngx-toastr';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './shared/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,6 +23,7 @@ export const appConfig: ApplicationConfig = {
         closeButton: true,
         progressBar: true
       })
-    )
+    ),
+    provideHttpClient(withInterceptors([authInterceptor]))
   ]
 };
